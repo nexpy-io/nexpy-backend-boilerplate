@@ -1,3 +1,8 @@
+// eslint-disable-next-line import-helpers/order-imports
+import * as dotenv from 'dotenv'
+
+dotenv.config()
+
 import { ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 

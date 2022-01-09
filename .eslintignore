@@ -1,0 +1,10 @@
+node_modules
+dist
+
+.eslintrc.js
+.husky
+.vscode
+.circleci
+
+src/**/*.test*
+coverage

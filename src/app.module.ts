@@ -1,6 +1,11 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+import { APP_GUARD } from '@nestjs/core'
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 import { TypeOrmModule } from '@nestjs/typeorm'
+
+import { AuthModule } from './modules/auth/auth.module'
+import { UsersModule } from './modules/users/users.module'
 
 import { AppController } from './app.controller'
 import {
@@ -9,6 +14,7 @@ import {
   POSTGRES_DB,
   POSTGRES_HOST,
   POSTGRES_PORT,
+  NODE_ENV,
 } from './environment'
 
 @Module({
@@ -22,10 +28,21 @@ import {
       password: POSTGRES_PASSWORD,
       database: POSTGRES_DB,
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: NODE_ENV !== 'production',
     }),
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 20,
+    }),
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}

@@ -24,8 +24,8 @@ module.exports = {
         groups: [
           '/^@nestjs/',
           'module',
-          '/^modules/',
-          ['/^utils/', '/^constants/'],
+          '/modules/',
+          ['/utils/', '/constants/'],
           '/^types/',
           ['parent', 'sibling', 'index'],
         ],
